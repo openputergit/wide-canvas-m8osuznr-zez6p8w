@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Layers Visualization</title>
+    <script src="https://unpkg.com/three@0.157.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.157.0/examples/js/controls/OrbitControls.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        canvas { width: 100%; height: 100%; }
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .layer-info {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white overflow-x-hidden">
+    <div id="canvas-container"></div>
+    
+    <div class="container mx-auto px-4 py-8 relative">
+        <h1 class="text-4xl font-bold mb-8 text-center">Blockchain Layers Architecture</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="layer-info p-6">
+                <h2 class="text-2xl font-bold mb-4 text-cyan-400">Application Layer</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-purple-800 p-3 rounded">IoT</div>
+                    <div class="bg-purple-800 p-3 rounded">Smart Grids</div>
+                    <div class="bg-purple-800 p-3 rounded">Machine Learning</div>
+                    <div class="bg-purple-800 p-3 rounded">Supply Chain</div>
+                    <div class="bg-purple-800 p-3 rounded">BCI</div>
+                    <div class="bg-purple-800 p-3 rounded">Smart City</div>
+                    <div class="bg-purple-800 p-3 rounded">Agriculture</div>
+                    <div class="bg-purple-800 p-3 rounded">Finance</div>
+                </div>
+            </div>
+
+            <div class="layer-info p-6">
+                <h2 class="text-2xl font-bold mb-4 text-blue-400">Contract Layer</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-red-300 p-3 rounded">Script Code</div>
+                    <div class="bg-red-300 p-3 rounded">Algorithm</div>
+                    <div class="bg-red-300 p-3 rounded">Smart Contract</div>
+                </div>
+            </div>
+
+            <div class="layer-info p-6">
+                <h2 class="text-2xl font-bold mb-4 text-green-400">Incentive Layer</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-green-200 text-gray-800 p-3 rounded">Issuance Mechanism</div>
+                    <div class="bg-green-200 text-gray-800 p-3 rounded">Allocation Mechanism</div>
+                </div>
+            </div>
+
+            <div class="layer-info p-6">
+                <h2 class="text-2xl font-bold mb-4 text-yellow-400">Consensus Layer</h2>
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="bg-yellow-100 text-gray-800 p-3 rounded">PoW</div>
+                    <div class="bg-yellow-100 text-gray-800 p-3 rounded">PoS</div>
+                    <div class="bg-yellow-100 text-gray-800 p-3 rounded">PBFT</div>
+                    <div class="bg-yellow-100 text-gray-800 p-3 rounded">DPoS</div>
+                    <div class="bg-yellow-100 text-gray-800 p-3 rounded">Ripple</div>
+                    <div class="bg-yellow-100 text-gray-800 p-3 rounded">Tendermint</div>
+                    <div class="bg-yellow-100 text-gray-800 p-3 rounded">PoET</div>
+                </div>
+            </div>
+
+            <div class="layer-info p-6">
+                <h2 class="text-2xl font-bold mb-4 text-blue-500">Network Layer</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-blue-200 text-gray-800 p-3 rounded">P2P Network</div>
+                    <div class="bg-blue-200 text-gray-800 p-3 rounded">Communication Mechanism</div>
+                    <div class="bg-blue-200 text-gray-800 p-3 rounded">Verification Mechanism</div>
+                </div>
+            </div>
+
+            <div class="layer-info p-6">
+                <h2 class="text-2xl font-bold mb-4 text-teal-400">Data Layer</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-teal-200 text-gray-800 p-3 rounded">Data Block</div>
+                    <div class="bg-teal-200 text-gray-800 p-3 rounded">Chain Structure</div>
+                    <div class="bg-teal-200 text-gray-800 p-3 rounded">Time Stamp</div>
+                    <div class="bg-teal-200 text-gray-800 p-3 rounded">Hash Function</div>
+                    <div class="bg-teal-200 text-gray-800 p-3 rounded">Merkle Tree</div>
+                    <div class="bg-teal-200 text-gray-800 p-3 rounded">Asymmetric Encryption</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Implementation
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create particle system
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 5000;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 5;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.005,
+            color: '#00ff88',
+            transparent: true
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 3;
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.y += 0.001;
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
